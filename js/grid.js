@@ -111,18 +111,46 @@ Grid.prototype.clone = function() {
 };
 
 // Set up the initial tiles to start the game with
+// Grid.prototype.addStartTiles = function () {
+//   for (var i=0; i<this.startTiles; i++) {
+//     this.addRandomTile();
+//   }
+// };
+
 Grid.prototype.addStartTiles = function () {
-  for (var i=0; i<this.startTiles; i++) {
-    this.addRandomTile();
-  }
+ 
+  // this.insertTile(new Tile({x:0,y:0}, 2**2));
+  // this.insertTile(new Tile({x:0,y:1}, 2**1));
+  this.insertTile(new Tile({x:0,y:2}, 2**3));
+  this.insertTile(new Tile({x:0,y:3}, 2**4));
+  
+  this.insertTile(new Tile({x:1,y:0}, 2**1));
+  this.insertTile(new Tile({x:1,y:1}, 2**1));
+  this.insertTile(new Tile({x:1,y:2}, 2**4));
+  this.insertTile(new Tile({x:1,y:3}, 2**6));
+
+  this.insertTile(new Tile({x:2,y:0}, 2**2));
+  this.insertTile(new Tile({x:2,y:1}, 2**2));
+  this.insertTile(new Tile({x:2,y:2}, 2**3));
+  this.insertTile(new Tile({x:2,y:3}, 2**8));
+  
+  this.insertTile(new Tile({x:3,y:0}, 2**1));
+  this.insertTile(new Tile({x:3,y:1}, 2**1));
+  this.insertTile(new Tile({x:3,y:2}, 2**2));
+  this.insertTile(new Tile({x:3,y:3}, 2**10));
+
+  
 };
 
 // Adds a tile in a random position
 Grid.prototype.addRandomTile = function () {
   if (this.cellsAvailable()) {
-    var value = Math.random() < 0.9 ? 2 : 4;
-    //var value = Math.random() < 0.9 ? 256 : 512;
-    var tile = new Tile(this.randomAvailableCell(), value);
+    // var cell = this.randomAvailableCell();
+    // console.log(cell)
+    var input = prompt()
+    var cell2 = {x:input[0]*1, y:input[1]*1}
+    console.log(cell2)
+    var tile = new Tile(cell2, 2);
 
     this.insertTile(tile);
   }

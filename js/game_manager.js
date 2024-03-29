@@ -8,7 +8,7 @@ function GameManager(size, InputManager, Actuator) {
   this.inputManager.on("move", this.move.bind(this));
   this.inputManager.on("restart", this.restart.bind(this));
 
-  this.inputManager.on('think', function() {
+  this.inputManager.on('move', function() {
     var best = this.ai.getBest();
     this.actuator.showHint(best.move);
   }.bind(this));
