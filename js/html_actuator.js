@@ -73,6 +73,21 @@ HTMLActuator.prototype.addTile = function (tile) {
 
   // Put the tile on the board
   this.tileContainer.appendChild(element);
+
+
+  // add click to tile
+
+    window.requestAnimationFrame(function () {
+      // element.addEventListener("click", this.think.bind(this));
+      element.addEventListener("click", self.emit("think"));
+
+
+    });
+    
+  
+  
+
+  
 };
 
 HTMLActuator.prototype.applyClasses = function (element, classes) {

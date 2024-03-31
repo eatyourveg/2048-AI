@@ -44,6 +44,7 @@ KeyboardInputManager.prototype.listen = function () {
         event.preventDefault();
         var feedbackContainer  = document.getElementById('feedback-container');
         feedbackContainer.innerHTML = ' ';
+        // console.log(mapped)
         self.emit("move", mapped);
       }
 
@@ -61,6 +62,17 @@ KeyboardInputManager.prototype.listen = function () {
     feedbackContainer.innerHTML = '<img src=img/spinner.gif />';
     self.emit('think');
   });
+
+  var tileContainer = document.getElementsByClassName("grid-cell");
+  // console.log(tileContainer)
+  for (let i = 0; i < tileContainer.length; i++) {
+    // tileContainer[i].addEventListener("click", function(e){
+    //   self.emit("think");
+    // });  
+    tileContainer[i].addEventListener("click", this.think.bind(this));
+
+  }
+
 
   var runButton = document.getElementById('run-button');
   runButton.addEventListener('click', function(e) {
@@ -90,4 +102,10 @@ KeyboardInputManager.prototype.listen = function () {
 KeyboardInputManager.prototype.restart = function (event) {
   event.preventDefault();
   this.emit("restart");
+};
+
+
+KeyboardInputManager.prototype.think = function (event) {
+  event.preventDefault();
+  this.emit("think");
 };

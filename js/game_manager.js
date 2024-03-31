@@ -8,9 +8,13 @@ function GameManager(size, InputManager, Actuator) {
   this.inputManager.on("move", this.move.bind(this));
   this.inputManager.on("restart", this.restart.bind(this));
 
-  this.inputManager.on('move', function() {
+  this.inputManager.on('think', function() {
     var best = this.ai.getBest();
+    console.log(best)
     this.actuator.showHint(best.move);
+    // this.emit("move", best.move*1);
+
+    this.move(best.move*1)
   }.bind(this));
 
 
@@ -65,7 +69,6 @@ GameManager.prototype.actuate = function () {
 GameManager.prototype.move = function(direction) {
   var result = this.grid.move(direction);
   this.score += result.score;
-
   if (!result.won) {
     if (result.moved) {
       this.grid.computerMove();

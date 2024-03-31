@@ -119,6 +119,7 @@ Grid.prototype.clone = function() {
 
 Grid.prototype.addStartTiles = function () {
  
+  
   // this.insertTile(new Tile({x:0,y:0}, 2**2));
   // this.insertTile(new Tile({x:0,y:1}, 2**1));
   this.insertTile(new Tile({x:0,y:2}, 2**3));
@@ -138,6 +139,7 @@ Grid.prototype.addStartTiles = function () {
   this.insertTile(new Tile({x:3,y:1}, 2**1));
   this.insertTile(new Tile({x:3,y:2}, 2**2));
   this.insertTile(new Tile({x:3,y:3}, 2**10));
+
 
   
 };
