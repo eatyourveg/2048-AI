@@ -63,15 +63,7 @@ KeyboardInputManager.prototype.listen = function () {
     self.emit('think');
   });
 
-  var tileContainer = document.getElementsByClassName("grid-cell");
-  // console.log(tileContainer)
-  for (let i = 0; i < tileContainer.length; i++) {
-    // tileContainer[i].addEventListener("click", function(e){
-    //   self.emit("think");
-    // });  
-    tileContainer[i].addEventListener("click", this.think.bind(this));
 
-  }
 
 
   var runButton = document.getElementById('run-button');

@@ -269,6 +269,18 @@ Grid.prototype.computerMove = function() {
   this.playerTurn = true;
 }
 
+Grid.prototype.playerMove = function() {
+  // this.addRandomTile();
+    // console.log(cell)
+    var input = prompt()
+    var cell2 = {x:input[0]*1, y:input[1]*1}
+    console.log(cell2)
+    var tile = new Tile(cell2, 2);
+
+    this.insertTile(tile);
+  this.playerTurn = true;
+}
+
 // Build a list of positions to traverse in the right order
 Grid.prototype.buildTraversals = function (vector) {
   var traversals = { x: [], y: [] };

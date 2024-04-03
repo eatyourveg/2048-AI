@@ -8,14 +8,7 @@ function GameManager(size, InputManager, Actuator) {
   this.inputManager.on("move", this.move.bind(this));
   this.inputManager.on("restart", this.restart.bind(this));
 
-  this.inputManager.on('think', function() {
-    var best = this.ai.getBest();
-    console.log(best)
-    this.actuator.showHint(best.move);
-    // this.emit("move", best.move*1);
-
-    this.move(best.move*1)
-  }.bind(this));
+  this.inputManager.on('think', this.think.bind(this));
 
 
   this.inputManager.on('run', function() {
@@ -55,6 +48,47 @@ GameManager.prototype.setup = function () {
   this.actuate();
 };
 
+GameManager.prototype.think = function() {
+  var best = this.ai.getBest();
+  this.actuator.showHint(best.move);
+}
+
+GameManager.prototype.spawn = function(event) {
+  var best = this.ai.getBest();
+  console.log(event)
+  var target = event.target.classList
+  console.log(target)
+  console.log(target.forEach(x => {
+    x.includes("tile-position*") ? x : null
+    
+    }
+  ))
+  // console.log(best)
+  // this.actuator.showHint(best.move);
+  // this.emit("move", best.move*1);
+
+  // this.move(best.move*1)
+  // console.log(this)
+  // console.log(event)
+  var result = this.grid.move(best.move*1);
+  this.score += result.score;
+  if (!result.won) {
+    if (result.moved) {
+      this.grid.computerMove();
+    }
+  } else {
+    this.won = true;
+  }
+
+  //console.log(this.grid.valueSum());
+
+  if (!this.grid.movesAvailable()) {
+    this.over = true; // Game over!
+  }
+
+  this.actuate();
+  this.think();
+}
 
 // Sends the updated grid to the actuator
 GameManager.prototype.actuate = function () {
@@ -63,6 +97,18 @@ GameManager.prototype.actuate = function () {
     over:  this.over,
     won:   this.won
   });
+  setTimeout(() => {
+    var tileContainer = document.querySelectorAll('.tile,.grid-cell')
+
+    for (let i = 0; i < tileContainer.length; i++) {
+      tileContainer[i].addEventListener("click", this.spawn.bind(this));
+  
+    }
+    // console.log(tileContainer)
+
+  }, animationDelay);
+
+
 };
 
 // makes a given move and updates state
@@ -84,7 +130,9 @@ GameManager.prototype.move = function(direction) {
   }
 
   this.actuate();
+  this.think();
 }
+
 
 // moves continuously until game is over
 GameManager.prototype.run = function() {
