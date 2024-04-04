@@ -45,36 +45,48 @@ GameManager.prototype.setup = function () {
   this.won          = false;
 
   // Update the actuator
+  this.think();
   this.actuate();
+
+  setTimeout(() => {
+    var tileContainer = document.querySelectorAll('.grid-cell')
+
+    for (let i = 0; i < tileContainer.length; i++) {
+      tileContainer[i].addEventListener("click", this.spawn.bind(this));
+  
+    }
+    // console.log(tileContainer)
+
+  }, animationDelay);
 };
 
 GameManager.prototype.think = function() {
-  var best = this.ai.getBest();
-  this.actuator.showHint(best.move);
+  this.ai.best = this.ai.getBest();
+  this.actuator.showHint(this.ai.best.move);
 }
 
 GameManager.prototype.spawn = function(event) {
-  var best = this.ai.getBest();
-  console.log(event)
+  // var best = this.ai.getBest();
   var target = event.target.classList
-  console.log(target)
-  console.log(target.forEach(x => {
-    x.includes("tile-position*") ? x : null
-    
-    }
-  ))
-  // console.log(best)
-  // this.actuator.showHint(best.move);
-  // this.emit("move", best.move*1);
+  var coord = {}
+  for(let i = 0;i<target.length;i++){
+    if(target[i].includes("tile-position")){
+      // remove all characters but numbers
+      var res = target[i].replace(/\D/g, "");
 
-  // this.move(best.move*1)
-  // console.log(this)
-  // console.log(event)
-  var result = this.grid.move(best.move*1);
+      // css coords start at 1,1
+      // subtract 1 to match array start
+      coord = {x: parseInt(res[0]),y:parseInt(res[1])}
+      coord.x -= 1
+      coord.y -= 1
+    } 
+  }
+
+  var result = this.grid.move(parseInt(this.ai.best.move));
   this.score += result.score;
   if (!result.won) {
     if (result.moved) {
-      this.grid.computerMove();
+      this.grid.playerMove(coord);
     }
   } else {
     this.won = true;
@@ -98,7 +110,7 @@ GameManager.prototype.actuate = function () {
     won:   this.won
   });
   setTimeout(() => {
-    var tileContainer = document.querySelectorAll('.tile,.grid-cell')
+    var tileContainer = document.querySelectorAll('.tile')
 
     for (let i = 0; i < tileContainer.length; i++) {
       tileContainer[i].addEventListener("click", this.spawn.bind(this));
