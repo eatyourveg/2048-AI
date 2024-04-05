@@ -119,26 +119,61 @@ Grid.prototype.clone = function() {
 
 Grid.prototype.addStartTiles = function () {
  
-  
-  // this.insertTile(new Tile({x:0,y:0}, 2**2));
-  // this.insertTile(new Tile({x:0,y:1}, 2**1));
-  this.insertTile(new Tile({x:0,y:2}, 2**3));
-  this.insertTile(new Tile({x:0,y:3}, 2**4));
-  
-  this.insertTile(new Tile({x:1,y:0}, 2**1));
-  this.insertTile(new Tile({x:1,y:1}, 2**1));
-  this.insertTile(new Tile({x:1,y:2}, 2**4));
-  this.insertTile(new Tile({x:1,y:3}, 2**6));
+  let arr = [
+    0,0,2,3,
+    0,0,3,5,
+    0,4,5,8,
+    3,9,6,10
+  ]
 
-  this.insertTile(new Tile({x:2,y:0}, 2**2));
-  this.insertTile(new Tile({x:2,y:1}, 2**2));
-  this.insertTile(new Tile({x:2,y:2}, 2**3));
-  this.insertTile(new Tile({x:2,y:3}, 2**8));
+  let i = 0;
+  for(var y = 0; y<4;y++){
+    for(var x = 0; x<4;x++){
+      arr[i] != 0 ? this.insertTile(new Tile({x:x,y:y}, 2**arr[i])) : null
+      i++
+    }
+
+  }
   
-  this.insertTile(new Tile({x:3,y:0}, 2**1));
-  this.insertTile(new Tile({x:3,y:1}, 2**1));
-  this.insertTile(new Tile({x:3,y:2}, 2**2));
-  this.insertTile(new Tile({x:3,y:3}, 2**10));
+  // // this.insertTile(new Tile({x:0,y:0}, 2**2));
+  // // this.insertTile(new Tile({x:0,y:1}, 2**1));
+  // this.insertTile(new Tile({x:0,y:2}, 2**3));
+  // this.insertTile(new Tile({x:0,y:3}, 2**4));
+  
+  // this.insertTile(new Tile({x:1,y:0}, 2**1));
+  // this.insertTile(new Tile({x:1,y:1}, 2**1));
+  // this.insertTile(new Tile({x:1,y:2}, 2**4));
+  // this.insertTile(new Tile({x:1,y:3}, 2**6));
+
+  // this.insertTile(new Tile({x:2,y:0}, 2**2));
+  // this.insertTile(new Tile({x:2,y:1}, 2**2));
+  // this.insertTile(new Tile({x:2,y:2}, 2**3));
+  // this.insertTile(new Tile({x:2,y:3}, 2**8));
+  
+  // this.insertTile(new Tile({x:3,y:0}, 2**1));
+  // this.insertTile(new Tile({x:3,y:1}, 2**1));
+  // this.insertTile(new Tile({x:3,y:2}, 2**2));
+  // this.insertTile(new Tile({x:3,y:3}, 2**10));
+
+  // this.insertTile(new Tile({x:0,y:0}, 2**3));
+  // this.insertTile(new Tile({x:0,y:1}, 2**5));
+  // this.insertTile(new Tile({x:0,y:2}, 2**3));
+  // this.insertTile(new Tile({x:0,y:3}, 2**3));
+  
+  // this.insertTile(new Tile({x:1,y:0}, 2**4));
+  // this.insertTile(new Tile({x:1,y:1}, 2**4));
+  // this.insertTile(new Tile({x:1,y:2}, 2**5));
+  // this.insertTile(new Tile({x:1,y:3}, 2**2));
+
+  // this.insertTile(new Tile({x:2,y:0}, 2**2));
+  // this.insertTile(new Tile({x:2,y:1}, 2**5));
+  // this.insertTile(new Tile({x:2,y:2}, 2**7));
+  // this.insertTile(new Tile({x:2,y:3}, 2**6));
+  
+  // this.insertTile(new Tile({x:3,y:0}, 2**3));
+  // this.insertTile(new Tile({x:3,y:1}, 2**6));
+  // this.insertTile(new Tile({x:3,y:2}, 2**10));
+  // this.insertTile(new Tile({x:3,y:3}, 2**10));
 
 
   
@@ -270,7 +305,8 @@ Grid.prototype.computerMove = function() {
 }
 
 Grid.prototype.playerMove = function(coord) {
-  var tile = new Tile(coord, 2);
+  var tile = new Tile(coord, 4);
+  // var tile = new Tile(coord, 2);
   // console.log(tile)
   this.insertTile(tile);
   this.playerTurn = true;

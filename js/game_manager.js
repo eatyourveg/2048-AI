@@ -7,7 +7,6 @@ function GameManager(size, InputManager, Actuator) {
 
   this.inputManager.on("move", this.move.bind(this));
   this.inputManager.on("restart", this.restart.bind(this));
-
   this.inputManager.on('think', this.think.bind(this));
 
 
@@ -48,58 +47,19 @@ GameManager.prototype.setup = function () {
   this.think();
   this.actuate();
 
-  setTimeout(() => {
+  // setTimeout(() => {
     var tileContainer = document.querySelectorAll('.grid-cell')
-
     for (let i = 0; i < tileContainer.length; i++) {
       tileContainer[i].addEventListener("click", this.spawn.bind(this));
-  
     }
     // console.log(tileContainer)
 
-  }, animationDelay);
+  // }, animationDelay);
 };
 
 GameManager.prototype.think = function() {
   this.ai.best = this.ai.getBest();
   this.actuator.showHint(this.ai.best.move);
-}
-
-GameManager.prototype.spawn = function(event) {
-  // var best = this.ai.getBest();
-  var target = event.target.classList
-  var coord = {}
-  for(let i = 0;i<target.length;i++){
-    if(target[i].includes("tile-position")){
-      // remove all characters but numbers
-      var res = target[i].replace(/\D/g, "");
-
-      // css coords start at 1,1
-      // subtract 1 to match array start
-      coord = {x: parseInt(res[0]),y:parseInt(res[1])}
-      coord.x -= 1
-      coord.y -= 1
-    } 
-  }
-
-  var result = this.grid.move(parseInt(this.ai.best.move));
-  this.score += result.score;
-  if (!result.won) {
-    if (result.moved) {
-      this.grid.playerMove(coord);
-    }
-  } else {
-    this.won = true;
-  }
-
-  //console.log(this.grid.valueSum());
-
-  if (!this.grid.movesAvailable()) {
-    this.over = true; // Game over!
-  }
-
-  this.actuate();
-  this.think();
 }
 
 // Sends the updated grid to the actuator
@@ -109,16 +69,26 @@ GameManager.prototype.actuate = function () {
     over:  this.over,
     won:   this.won
   });
-  setTimeout(() => {
+
+  var self = this
+  function repeat(){
+    // animation
+    console.log(this)
     var tileContainer = document.querySelectorAll('.tile')
-
     for (let i = 0; i < tileContainer.length; i++) {
-      tileContainer[i].addEventListener("click", this.spawn.bind(this));
-  
+      tileContainer[i].addEventListener("click", self.spawn.bind(self));
     }
-    // console.log(tileContainer)
-
-  }, animationDelay);
+    console.log("hello")
+  }
+  
+  requestAnimationFrame(repeat)
+  
+  // setTimeout(() => {
+  //   var tileContainer = document.querySelectorAll('.tile')
+  //   for (let i = 0; i < tileContainer.length; i++) {
+  //     tileContainer[i].addEventListener("click", this.spawn.bind(this));
+  //   }
+  // }, animationDelay);
 
 
 };
@@ -157,4 +127,48 @@ GameManager.prototype.run = function() {
       self.run();
     }, timeout);
   }
+}
+
+// get location of click event, run ai best move, spawn block into location of click event
+// event: click event
+GameManager.prototype.spawn = function(event) {
+  // var best = this.ai.getBest();
+
+  // get event target element, get arr of classes of el
+  var target = event.target.classList
+  var coord = {}
+  for(let i = 0;i<target.length;i++){
+    if(target[i].includes("tile-position")){
+      // remove all characters but numbers
+      var res = target[i].replace(/\D/g, "");
+
+      // css coords start at 1,1
+      // subtract 1 to match array start
+      coord = {x: parseInt(res[0]),y:parseInt(res[1])}
+      coord.x -= 1
+      coord.y -= 1
+    } 
+  }
+
+  // get ai best move, do move
+  var result = this.grid.move(parseInt(this.ai.best.move));
+
+  this.score += result.score;
+  if (!result.won) {
+    if (result.moved) {
+      // run playermove on coord
+      this.grid.playerMove(coord);
+    }
+  } else {
+    this.won = true;
+  }
+
+  //console.log(this.grid.valueSum());
+
+  if (!this.grid.movesAvailable()) {
+    this.over = true; // Game over!
+  }
+
+  this.actuate();
+  this.think();
 }
